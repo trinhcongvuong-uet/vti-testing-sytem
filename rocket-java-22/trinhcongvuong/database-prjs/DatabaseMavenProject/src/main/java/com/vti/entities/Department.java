@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import com.vti.repositories.DepartmentRepository;
 
-public class Department {
+public class Department implements Comparable<Department> {
 	private static long currentId = 0;
 
 	private long departmentId;
@@ -45,5 +45,28 @@ public class Department {
 		DepartmentRepository departmentRepository = new DepartmentRepository();
 		currentId = departmentRepository.getMaxId();
 		this.departmentId = ++currentId;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Department)) {
+			return false;
+		}
+		Department department = (Department) obj;
+		if (department.getDepartmentId() == this.departmentId
+				&& department.getDepartmentName() == this.departmentName) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public int compareTo(Department o) {
+		if(this.getDepartmentId() > o.getDepartmentId()) {
+			return 1;
+		} else if(this.getDepartmentId() < o.getDepartmentId()){
+			return -1;
+		}
+		return 0;
 	}
 }
